@@ -1,0 +1,13 @@
+**/.DS_Store
+.env
+.env.*
+vendor/
+var/
+node_modules/
+payment-backend/vendor/
+payment-backend/var/
+payment-backend/.env
+payment-backend/.env.local
+payment-backend/.env.*.local
+payment-backend/.phpunit.result.cache
+
