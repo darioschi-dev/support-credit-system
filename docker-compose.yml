@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  freescout:
+    image: tiredofit/freescout:latest-arm32v7
+    container_name: freescout
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=freescout-db
+      - DB_NAME=freescout
+      - DB_USER=freescout
+      - DB_PASS=freescoutpass
+    volumes:
+      - ./data/freescout:/data
+
+  freescout-db:
+    image: mariadb:10.5
+    container_name: freescout-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: freescout
+      MYSQL_USER: freescout
+      MYSQL_PASSWORD: freescoutpass
+    volumes:
+      - ./data/db:/var/lib/mysql
+
+  payment-backend:
+    build:
+      context: ./payment-backend
+    container_name: payment-backend
+    ports:
+      - "3000:80"
+    environment:
+      DATABASE_URL: "mysql://freescout:freescoutpass@freescout-db:3306/freescout"
+    depends_on:
+      - freescout-db

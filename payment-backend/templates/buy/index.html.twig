@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head><title>Acquista ore</title></head>
+<body>
+<h1>Acquista un pacchetto ore</h1>
+<ul>
+  {% for pkg in packages %}
+    <li>{{ pkg.hours }} ore - {{ pkg.price }}€</li>
+  {% endfor %}
+</ul>
+</body>
+</html>
