@@ -6,9 +6,16 @@ RUN apt-get update && apt-get install -y \
     libzip-dev libonig-dev libxml2-dev bash && \
     docker-php-ext-install pdo pdo_mysql zip
 
-# Install nvm, Node.js LTS 18, corepack + yarn
+# Enable mod_rewrite and configure Apache
+RUN a2enmod rewrite && \
+    echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
+    sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf && \
+    sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# Install nvm, Node.js LTS, corepack and yarn
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION=18.20.2
+ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin/:$PATH"
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
     . "$NVM_DIR/nvm.sh" && \
@@ -18,9 +25,6 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
     npm install -g corepack && \
     corepack enable && \
     corepack prepare yarn@stable --activate
-
-# Make Node, npm, yarn and corepack available globally (non-login shells)
-ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin/:$PATH"
 
 # Set working dir
 WORKDIR /var/www/html
@@ -34,8 +38,5 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 
 # Install PHP dependencies
 RUN composer install --no-interaction
-
-# Apache to serve /public
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80

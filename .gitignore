@@ -10,6 +10,7 @@ payment-backend/.env
 payment-backend/.env.local
 payment-backend/.env.*.local
 payment-backend/.phpunit.result.cache
+payment-backend/node_modules/
 
 .idea/
 data/
