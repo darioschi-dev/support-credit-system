@@ -1,12 +1,79 @@
+{# templates/buy/index.html.twig #}
 <!DOCTYPE html>
-<html>
-<head><title>Acquista ore</title></head>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Acquista un pacchetto ore</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f9fafb;
+            margin: 0;
+            padding: 2rem;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: #1e40af;
+        }
+    </style>
+</head>
 <body>
-<h1>Acquista un pacchetto ore</h1>
-<ul>
-  {% for pkg in packages %}
-    <li>{{ pkg.hours }} ore - {{ pkg.price }}€</li>
-  {% endfor %}
-</ul>
+<div class="container">
+    <h1>Acquista un pacchetto ore</h1>
+    <ul>
+        <li>
+            <span>5 ore - 50€</span>
+            <button class="btn">Acquista</button>
+        </li>
+        <li>
+            <span>10 ore - 90€</span>
+            <button class="btn">Acquista</button>
+        </li>
+        <li>
+            <span>20 ore - 160€</span>
+            <button class="btn">Acquista</button>
+        </li>
+    </ul>
+</div>
 </body>
 </html>
