@@ -11,3 +11,5 @@ payment-backend/.env.local
 payment-backend/.env.*.local
 payment-backend/.phpunit.result.cache
 
+.idea/
+data/
