@@ -1,0 +1,54 @@
+services:
+  freescout:
+    image: tiredofit/freescout:latest
+    container_name: freescout
+    ports:
+      - "8080:80"
+    environment:
+      - APPLICATION_NAME=HelpDesk Dario
+      - SETUP_TYPE=AUTO
+      - ENABLE_AUTO_UPDATE=TRUE
+      - DB_TYPE=mysql
+      - DB_HOST=freescout-db
+      - DB_PORT=3306
+      - DB_NAME=freescout
+      - DB_USER=freescout
+      - DB_PASS=freescoutpass
+      - SITE_URL=http://localhost:8080
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_PASS=adminpass
+      - ADMIN_FIRST_NAME=Dario
+      - ADMIN_LAST_NAME=Admin
+      - DISPLAY_ERRORS=TRUE
+    volumes:
+      - ./data/freescout:/data
+      - ./custom:/assets/custom
+      - ./freescout.env:/www/html/.env
+      - ./custom:/assets/custom
+    depends_on:
+        - freescout-db
+
+  freescout-db:
+    image: mariadb:10.5
+    container_name: freescout-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  payment-backend:
+    build:
+      context: ./payment-backend
+    container_name: payment-backend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./payment-backend:/var/www/html
+    environment:
+      DATABASE_URL: mysql://freescout:freescoutpass@freescout-db:3306/freescout
+    depends_on:
+      - freescout-db
+
